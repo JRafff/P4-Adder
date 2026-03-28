@@ -9,7 +9,7 @@ Standard Ripple Carry Adders (RCAs) suffer from severe performance bottlenecks d
 
 Furthermore, this module acts as a complete arithmetic unit. It natively supports both **Addition and Subtraction** by implementing a 2's complement XOR barrier on the inputs, controlled by a dedicated `SUB` flag.
 
-![Alt text](/img/P4_top_level.JPG?raw=true "P4 Adder Top Level") *(Note: Sostituisci con l'immagine del tuo Top Level)*
+![Alt text](/img/P4.JPG?raw=true "P4 Adder Top Level") 
 
 ---
 
@@ -34,7 +34,7 @@ The intermediate levels of the tree merge the individual $p$ and $g$ signals int
 * **G Block (Shadowed/Black box):** Computes *only* the group Generate signal. It is typically used in the final nodes where the propagate signal is no longer needed.
     * $G_{i:j} = G_{i:k} + (P_{i:k} \cdot G_{k-1:j})$
 
-![Alt text](/img/PG_blocks.JPG?raw=true "PG and G blocks") *(Note: Sostituisci con lo schema dei blocchi PG/G)*
+![Alt text](/img/CARRY_GENERATOR.JPG?raw=true "PG and G blocks") 
 
 ---
 
@@ -51,7 +51,7 @@ The 32-bit inputs are divided into 4-bit sub-blocks. Each sub-block implements a
 
 As soon as the actual carry arrives from the Prefix Tree (Carry Generator), the MUX instantly selects the correct pre-computed sum. This completely hides the internal RCA delay, as the sums are already calculated by the time the sparse tree finishes its routing.
 
-![Alt text](/img/CSB_architecture.JPG?raw=true "Carry Select Block") *(Note: Sostituisci con lo schema dei tuoi blocchi RCA e MUX)*
+![Alt text](/img/SUM_GENERATOR.JPG?raw=true "Carry Select Block") 
 
 ---
 
@@ -61,5 +61,5 @@ The project is structured using a strict **bottom-up approach**:
 * **Behavioral VHDL:** Used strictly for the elementary logic gates and base components (e.g., the standard RCA, the Multiplexers, and the basic PG/G logic equations).
 * **Structural VHDL:** Used for all the upper hierarchical levels (the Prefix Tree routing, the Carry Select blocks assembly, and the Top-Level P4 module). This ensures that the RTL code exactly matches the intended physical hardware wiring.
 
-## 📊 Verification
+##  Verification
 The design includes a fully automated, synchronous testbench (`TB_P4_ADDER.vhd`) that verifies the correctness of both Additions and Subtractions. It feeds the DUT with mathematical corner cases (e.g., extreme propagation `0xFFFFFFFF + 0x00000001`) and saves the self-checked results into a log file.
